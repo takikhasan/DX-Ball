@@ -142,8 +142,10 @@ void g()
 void print(vector<double> v)
 {
     glPushMatrix();
-        if (v[4] == 1) glColor3f(0.663, 0.663, 0.663);
-        else glColor3f(1.000, 0.549, 0.000);
+//        if (v[4] == 1) glColor3f(0.412, 0.412, 0.412);
+//        else glColor3f(0.502, 0.000, 0.000);
+        if (v[4] == 2) glColor3f(1.000, 0.549, 0.000);
+        else glColor3f(0.663, 0.663, 0.663);
         glRectf(v[0], v[1], v[2], v[3]);
     glPopMatrix();
 }
