@@ -342,7 +342,7 @@ void displayGame()
         if (!done[cnt++]) print(v);
     }
 
-    glColor3f(1.000, 0.271, 0.000);
+    glColor3f(1.000, 0.000, 1.000);
 
     string ss;
     int temp = score;
