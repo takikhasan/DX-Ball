@@ -191,6 +191,7 @@ void resumePlaying()
 }
 
 
+
 int main()
 {
 	glutInitWindowSize (600, 600);
@@ -293,6 +294,7 @@ vector<int> queue_bricks()
 
 void loadBricks(int level)
 {
+    bricks.clear();
     for (auto ss : grid[level]) {
         cout << ss << endl;
     }
@@ -480,6 +482,7 @@ void displayGame()
 
 void destroy_bricks()
 {
+    bool just_destroyed = 0;
     while (!Q.empty()) {
         int top = Q.front();
         Q.pop();
@@ -487,6 +490,27 @@ void destroy_bricks()
             if (bricks[top][4] == 1) score += 6;
             else score += 24;
             done[top] = 1;
+            just_destroyed = 1;
+        }
+    }
+    if (just_destroyed) {
+        bool level_finished = true;
+        for (bool check : done) {
+            if (check == false) {
+                level_finished = false;
+                break;
+            }
+        }
+        if (level_finished) {
+            if (current_level == (int)grid.size() - 1) {
+                /// SUCCESS!! YOU HAVE FINISHED THE GAME! STOP WASTING SO MUCH TIME :) !!
+
+            }
+            else {
+                loadBricks(++current_level);
+                done = vector<bool> (bricks.size(), 0);
+                respawn();
+            }
         }
     }
 }
