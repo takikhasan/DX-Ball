@@ -15,18 +15,47 @@ const double dx_ball_r = 1.5; /** ball radius */
 const double reflector_r = 30, reflector_h = 1; /** Half of relfector width, half of reflector height */
 const double brick_width = 15;
 const double brick_height = 5.5;
-const vector<string> grid = {
-    "..##...##..",
-    ".###...###.",
-    "##*#####*##",
-    "#**#####**#",
-    "##*#***#*##",
-    ".###***###.",
-    "##*#***#*##",
-    "#**#####**#",
-    "##*#####*##",
-    ".###...###.",
-    "..##...##.."
+const vector<vector<string>> grid = {
+    {
+        "..##...##..",
+        ".###...###.",
+        "##*#####*##",
+        "#**#####**#",
+        "##*#***#*##",
+        ".###***###.",
+        "##*#***#*##",
+        "#**#####**#",
+        "##*#####*##",
+        ".###...###.",
+        "..##...##.."
+    },
+    {
+        "............",
+        ".....##.....",
+        ".##.#**#.##.",
+        ".#*##**##*#.",
+        "..#*.**.*#..",
+        "#**.*..*.**#",
+        "#**.*..*.**#",
+        "..#*.**.*#..",
+        ".#*##**##*#.",
+        ".##.#**#.##.",
+        ".....##.....",
+        "............"
+    },
+    {
+        ".#*.....*#.",
+        "#*.......*#",
+        "*...*.*...*",
+        "...*.*.*...",
+        "..#.*#*.#..",
+        ".#.#.*.#.#.",
+        "..#.*#*.#..",
+        "...*.*.*...",
+        "*...*.*...*",
+        "#*.......*#",
+        ".#*.....*#."
+    }
 };
 const int dx4[] = { 0, 0, -1, +1 };
 const int dy4[] = { +1, -1, 0, 0 };
@@ -148,7 +177,7 @@ void newGame()
     done.clear();  /** done[i] = 1 means i'th brick has been destroyed permanently */
     Q = queue<int>();   /** Queue of bricks to be destroyed */
 
-    loadBricks(0);
+    loadBricks(current_level);
     done = vector<bool> (bricks.size(), 0);
     respawn();
 
@@ -264,21 +293,21 @@ vector<int> queue_bricks()
 
 void loadBricks(int level)
 {
-    for (auto ss : grid) {
+    for (auto ss : grid[level]) {
         cout << ss << endl;
     }
     double p = 0.5;
-    double top_left_x = -(brick_width * grid[0].size()) / 2.0;
+    double top_left_x = -(brick_width * grid[level][0].size()) / 2.0;
     double top_left_y = 50;
-    for (int i = 0; i < (int)grid.size(); i++) {
-        for (int j = 0; j < (int)grid[0].size(); j++) {
+    for (int i = 0; i < (int)grid[level].size(); i++) {
+        for (int j = 0; j < (int)grid[level][0].size(); j++) {
             double curr_y = top_left_y - i * brick_height;
             double curr_x = top_left_x + j * brick_width;
             /** top left point, bottom right point, type */
-            if (grid[i][j] == '#') {
+            if (grid[level][i][j] == '#') {
                 bricks.push_back({curr_x + p, curr_y - p, curr_x + brick_width - p, curr_y - brick_height + p, 1});
             }
-            else if (grid[i][j] == '*') {
+            else if (grid[level][i][j] == '*') {
                 bricks.push_back({curr_x + p, curr_y - p, curr_x + brick_width - p, curr_y - brick_height + p, 2});
             }
         }
