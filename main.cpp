@@ -9,7 +9,8 @@ using namespace std;
 
 #define PI acos(-1.0)
 #define RAD(x) ((x*PI)/180)
-const int font=(int)GLUT_BITMAP_8_BY_13;
+const int font=(int)GLUT_BITMAP_HELVETICA_12;
+const int font_menu=(int)GLUT_BITMAP_9_BY_15;
 const double dx_ball_r = 1.5; /** ball radius */
 const double reflector_r = 30, reflector_h = 1; /** Half of relfector width, half of reflector height */
 const double brick_width = 15;
@@ -34,19 +35,21 @@ const int dy4[] = { +1, -1, 0, 0 };
 
 /// OTHER VARIABLES     ***     ***     ***
 
+int total_options;
 double dx_ball_x = 0, dx_ball_y = -98;
 double reflector_x = 0, reflector_y = -98;
 int direction = 1;
 double fps = 240;
 double angle = 90 - 22.5;  /** Degrees */
 double new_angle = 90 - 22.5;   /** Temporary variable to help adjust angle */
-bool ball_is_moving;
+bool ball_is_moving = 0;
 int score = 0;
 int lives_left = 5;
 double each_step = 3.5; /** Increase for more speed */
-bool menu_screen;   /** Are we at the menu screen */
-bool game_running;  /** Is any game running */
-int current_level;  /** Current level of the game */
+bool menu_screen = 1;   /** Are we at the menu screen */
+int menu_highlight = 1; /** Where we at on the menu */
+bool game_running = 0;  /** Is any game running */
+int current_level = 0;  /** Current level of the game */
 vector<vector<double>> bricks;  /** From the 2d string, actual coordinates are stored here */
 vector<bool> done;  /** done[i] = 1 means i'th brick has been destroyed permanently */
 queue<int> Q;   /** Queue of bricks to be destroyed */
@@ -96,8 +99,8 @@ void display(void);
 void printLives()
 {
     int z = lives_left;
-    double x = -95;
-    double y = 97;
+    double x = -94;
+    double y = 96;
     double unit_len = 1.5;
     int cnt = 0;
     while (z--) {
@@ -126,6 +129,32 @@ void printLives()
     }
 }
 
+void newGame()
+{
+    dx_ball_x = 0, dx_ball_y = -98;
+    reflector_x = 0, reflector_y = -98;
+    direction = 1;
+    angle = 90 - 22.5;  /** Degrees */
+    new_angle = 90 - 22.5;   /** Temporary variable to help adjust angle */
+    ball_is_moving = 0;
+    score = 0;
+    lives_left = 5;
+    each_step = 3.5; /** Increase for more speed */
+    menu_screen = false;   /** Are we at the menu screen */
+    menu_highlight = 1; /** Where we at on the menu */
+    game_running = true;  /** Is any game running */
+    current_level = 0;  /** Current level of the game */
+    bricks.clear();  /** From the 2d string, actual coordinates are stored here */
+    done.clear();  /** done[i] = 1 means i'th brick has been destroyed permanently */
+    Q = queue<int>();   /** Queue of bricks to be destroyed */
+
+    loadBricks(0);
+    done = vector<bool> (bricks.size(), 0);
+    respawn();
+
+    glutPostRedisplay();
+}
+
 
 
 int main()
@@ -134,10 +163,6 @@ int main()
 	glutInitWindowPosition (100, 100);
 	glutCreateWindow ("DX Ball 2D - Made by Takik Hasan");
 	init();
-
-    loadBricks(0);
-    done = vector<bool> (bricks.size(), 0);
-    respawn();
 
     glutReshapeFunc(reshape);
     glutDisplayFunc(display);
@@ -286,36 +311,71 @@ void moveRight(void)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    switch (key) {
-        case 'a':
-			moveLeft();
-			break;
-        case 'd':
-			moveRight();
-            break;
-        case 32:
-            if (!ball_is_moving) {
-                ball_is_moving = 1;
+    if (!menu_screen) {
+        switch (key) {
+            case 'a':
+                moveLeft();
+                break;
+            case 'd':
+                moveRight();
+                break;
+            case 32:
+                if (!ball_is_moving) {
+                    ball_is_moving = 1;
+                    glutPostRedisplay();
+                }
+                break;
+            case 27:
+                menu_screen = true;
                 glutPostRedisplay();
-            }
-            break;
-        default:
-            break;
-	}
+                break;
+            default:
+                break;
+        }
+    }
+    else {
+        switch (key) {
+            case 13:
+                newGame();
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void spe_key(int key, int x, int y)
 {
-	switch (key) {
-		case GLUT_KEY_LEFT:
-            moveLeft();
-            break;
-		case GLUT_KEY_RIGHT:
-            moveRight();
-            break;
-	  default:
-			break;
-	}
+    if (menu_screen) {
+        switch (key) {
+            case GLUT_KEY_UP:
+                menu_highlight--;
+                if (menu_highlight == 0)
+                    menu_highlight = total_options;
+                glutPostRedisplay();
+                break;
+            case GLUT_KEY_DOWN:
+                menu_highlight++;
+                if (menu_highlight > total_options)
+                    menu_highlight = 1;
+                glutPostRedisplay();
+                break;
+          default:
+                break;
+        }
+    }
+    else {
+        switch (key) {
+            case GLUT_KEY_LEFT:
+                moveLeft();
+                break;
+            case GLUT_KEY_RIGHT:
+                moveRight();
+                break;
+          default:
+                break;
+        }
+    }
 }
 
 void displayGame()
@@ -342,7 +402,7 @@ void displayGame()
         if (!done[cnt++]) print(v);
     }
 
-    glColor3f(1.000, 0.000, 1.000);
+    glColor3f(0.118, 0.565, 1.000);
 
     string ss;
     int temp = score;
@@ -354,7 +414,7 @@ void displayGame()
     if (score < 10) ss = "Current score: 0" + ss;
     else ss = "Current score: " + ss;
     glPushMatrix();
-        renderBitmapString(100 - 54, 100 - 6, (void *)font, ss);
+        renderBitmapString(100 - 39, 100 - 6, (void *)font, ss);
     glPopMatrix();
 
     ss.clear();
@@ -367,7 +427,7 @@ void displayGame()
     if (angle != (int)angle) ss += ".5";
     ss = "Current angle: " + ss;
     glPushMatrix();
-        renderBitmapString(100 - 54, 100 - 12, (void *)font, ss);
+        renderBitmapString(100 - 39, 100 - 12, (void *)font, ss);
     glPopMatrix();
 
     ss.clear();
@@ -379,7 +439,7 @@ void displayGame()
     reverse(ss.begin(), ss.end());
     ss = "FPS: " + ss;
     glPushMatrix();
-        renderBitmapString(100 - 54, 100 - 18, (void *)font, ss);
+        renderBitmapString(100 - 39, 100 - 18, (void *)font, ss);
     glPopMatrix();
 }
 
@@ -473,7 +533,62 @@ void takeOneStep()
 
 void displayMenu()
 {
+    total_options = 5;  /** New Game, Save, Load, Change FPS, Quit */
+    if (game_running == true) total_options++;  /** Resume Playing */
+    double option_width = 80;
+    double option_height = 15;
+    double x = -option_width / 2;
+    double y = (option_height * total_options) / 2;
+    for (int i = 1; i <= total_options; i++) {
+        if (menu_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
 
+        if (i == 1) {
+            renderBitmapString(-13, y - 9, (void *)font_menu, "New Game");
+        }
+        else if (i == 2) {
+            renderBitmapString(-(13.0 / 8.0) * 4, y - 9, (void *)font_menu, "Save");
+        }
+        else if (i == 3) {
+            renderBitmapString(-(13.0 / 8.0) * 4, y - 9, (void *)font_menu, "Load");
+        }
+        else if (i == 4) {
+            renderBitmapString(-(13.0 / 8.0) * 10, y - 9, (void *)font_menu, "Change FPS");
+        }
+        else if (i == 5) {
+            renderBitmapString(-(13.0 / 8.0) * 4, y - 9, (void *)font_menu, "Quit");
+        }
+
+        if (menu_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
+
+        glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x, y - option_height);
+            glVertex2f(x + option_width, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x + option_width, y - option_height);
+            glVertex2f(x + option_width, y);
+        glEnd();
+         glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x + option_width, y);
+        glEnd();
+
+        y -= option_height + 2;
+    }
 }
 
 void display(void)
