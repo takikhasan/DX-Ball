@@ -155,6 +155,11 @@ void newGame()
     glutPostRedisplay();
 }
 
+void resumePlaying()
+{
+    menu_screen = false;
+    glutPostRedisplay();
+}
 
 
 int main()
@@ -336,7 +341,8 @@ void keyboard(unsigned char key, int x, int y)
     else {
         switch (key) {
             case 13:
-                newGame();
+                if (menu_highlight == 1) newGame();
+                else if (menu_highlight == 6) resumePlaying();
                 break;
             default:
                 break;
@@ -539,7 +545,9 @@ void displayMenu()
     double option_height = 15;
     double x = -option_width / 2;
     double y = (option_height * total_options) / 2;
-    for (int i = 1; i <= total_options; i++) {
+    int i = 1;
+    if (total_options == 6) i = 6;
+    while (1) {
         if (menu_highlight == i) {
             glColor3f(1.000, 0.843, 0.000);
         }
@@ -561,6 +569,9 @@ void displayMenu()
         }
         else if (i == 5) {
             renderBitmapString(-(13.0 / 8.0) * 4, y - 9, (void *)font_menu, "Quit");
+        }
+        else {
+            renderBitmapString(-(13.0 / 8.0) * 14, y - 9, (void *)font_menu, "Resume Playing");
         }
 
         if (menu_highlight == i) {
@@ -588,6 +599,18 @@ void displayMenu()
         glEnd();
 
         y -= option_height + 2;
+
+        if (total_options != 6) {
+            i++;
+            if (i > total_options) break;
+        }
+        else {
+            if (i == 6) i = 1;
+            else {
+                if (i == 5) break;
+                else i++;
+            }
+        }
     }
 }
 
@@ -597,19 +620,19 @@ void display(void)
 
     if (menu_screen == true) {
         displayMenu();
-    }
-    else {
-        displayGame();
-    }
-
-    glFlush();
-
-    if (ball_is_moving == false) {
+        glFlush();
         return;
     }
     else {
-        takeOneStep();
-    }
+        displayGame();
+        glFlush();
+        if (ball_is_moving == false) {
+            return;
+        }
+        else {
+            takeOneStep();
+        }
 
-    refresh();
+        refresh();
+    }
 }
