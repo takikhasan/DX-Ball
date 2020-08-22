@@ -78,7 +78,9 @@ double each_step = 3.5; /** Increase for more speed */
 bool menu_screen = 1;   /** Are we at the menu screen */
 bool game_finished_screen = 0;
 bool game_over_screen = 0;
+bool FPS_screen = 0;
 int menu_highlight = 1; /** Where we at on the menu */
+int FPS_highlight = 1;  /** Where we at on the FPS menu */
 bool game_running = 0;  /** Is any game running */
 int current_level = 0;  /** Current level of the game */
 vector<vector<double>> bricks;  /** From the 2d string, actual coordinates are stored here */
@@ -225,6 +227,75 @@ void displayFailureMessage()
     renderBitmapString(-(13.0 / 8.0) * s3.size(), y - 16, (void *)font_menu, s3);
 }
 
+void changeFPS()
+{
+    FPS_screen = true;
+    menu_screen = false;
+    glutPostRedisplay();
+}
+
+void displayFPSOptions()
+{
+    total_options = 4;  /** 60, 110, 200, 330 */
+    double option_width = 80;
+    double option_height = 15;
+    double x = -option_width / 2;
+    double y = (option_height * total_options) / 2;
+    int i = 1;
+    while (1) {
+        if (FPS_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
+
+        if (i == 1) {
+            renderBitmapString(-(13.0 / 8.0) * 2, y - 9, (void *)font_menu, "60");
+        }
+        else if (i == 2) {
+            renderBitmapString(-(13.0 / 8.0) * 3, y - 9, (void *)font_menu, "110");
+        }
+        else if (i == 3) {
+            renderBitmapString(-(13.0 / 8.0) * 3, y - 9, (void *)font_menu, "200");
+        }
+        else if (i == 4) {
+            renderBitmapString(-(13.0 / 8.0) * 3, y - 9, (void *)font_menu, "330");
+        }
+
+        if (FPS_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
+
+        glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x, y - option_height);
+            glVertex2f(x + option_width, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x + option_width, y - option_height);
+            glVertex2f(x + option_width, y);
+        glEnd();
+         glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x + option_width, y);
+        glEnd();
+
+        y -= option_height + 2;
+
+        i++;
+        if (i > total_options) break;
+    }
+}
+
+
+
 int main()
 {
 	glutInitWindowSize (600, 600);
@@ -288,7 +359,12 @@ void renderBitmapString(double x, double y, void *font, string s)
 
 void refresh()
 {
-    double msec = (1.0 / fps) * 1000;
+    double curr_fps;
+    if (fps == 60) curr_fps = 60;
+    else if (fps == 110) curr_fps = 120;
+    else if (fps == 200) curr_fps = 240;
+    else if (fps == 330) curr_fps = 480;
+    double msec = (1.0 / curr_fps) * 1000;
     Sleep(msec);
     glutPostRedisplay();
 }
@@ -380,13 +456,34 @@ void moveRight(void)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    if (game_finished_screen == true || game_over_screen == true) {
+    if (FPS_screen == true) {
+        switch (key) {
+            case 13:
+                if (FPS_highlight == 1) fps = 60;
+                else if (FPS_highlight == 2) fps = 110;
+                else if (FPS_highlight == 3) fps = 200;
+                else if (FPS_highlight == 4) fps = 330;
+                menu_screen = true;
+                FPS_screen = false;
+                glutPostRedisplay();
+                break;
+            case 27:
+                menu_screen = true;
+                FPS_screen = false;
+                glutPostRedisplay();
+                break;
+            default:
+                break;
+        }
+    }
+    else if (game_finished_screen == true || game_over_screen == true) {
         switch (key) {
             case 13:
                 game_finished_screen = false;
                 game_over_screen = false;
                 menu_screen = true;
                 game_running = false;
+                menu_highlight = 1;
                 glutPostRedisplay();
                 break;
             default:
@@ -421,6 +518,7 @@ void keyboard(unsigned char key, int x, int y)
                 if (menu_highlight == 1) newGame();
                 else if (menu_highlight == 6) resumePlaying();
                 else if (menu_highlight == 5) quit();
+                else if (menu_highlight == 4) changeFPS();
                 break;
             default:
                 break;
@@ -430,7 +528,25 @@ void keyboard(unsigned char key, int x, int y)
 
 void spe_key(int key, int x, int y)
 {
-    if (game_finished_screen == true || game_over_screen == true) {
+    if (FPS_screen == true) {
+        switch (key) {
+            case GLUT_KEY_UP:
+                FPS_highlight--;
+                if (FPS_highlight == 0)
+                    FPS_highlight = total_options;
+                glutPostRedisplay();
+                break;
+            case GLUT_KEY_DOWN:
+                FPS_highlight++;
+                if (FPS_highlight > total_options)
+                    FPS_highlight = 1;
+                glutPostRedisplay();
+                break;
+          default:
+                break;
+        }
+    }
+    else if (game_finished_screen == true || game_over_screen == true) {
 //        game_finished_screen = false;
 //        game_over_screen = false;
 //        menu_screen = true;
@@ -575,7 +691,7 @@ void takeOneStep()
 {
     double rad = RAD(angle);
 
-    double perfect_speed_fps = 240;
+    double perfect_speed_fps = 200;
     double fps_fix = perfect_speed_fps / fps;
 
     double incx = (cos(rad) / 2) * fps_fix;
@@ -731,7 +847,11 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    if (game_over_screen == true) {
+    if (FPS_screen == true) {
+        displayFPSOptions();
+        glFlush();
+    }
+    else if (game_over_screen == true) {
         displayFailureMessage();
         glFlush();
     }
