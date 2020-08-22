@@ -372,23 +372,6 @@ void saveGame(int slot)
     s[9] = '0' + slot;
     ofstream fout;
     fout.open(s);
-//    dx_ball_x = 0, dx_ball_y = -98;
-//    reflector_x = 0, reflector_y = -98;
-//    direction = 1;
-//    angle = 90 - 22.5;  /** Degrees */
-//    new_angle = 90 - 22.5;   /** Temporary variable to help adjust angle */
-//    ball_is_moving = 0;
-//    score = 0;
-//    lives_left = 5;
-//    each_step = 3.5; /** Increase for more speed */
-//    menu_screen = false;   /** Are we at the menu screen */
-//    menu_highlight = 1; /** Where we at on the menu */
-//    game_running = true;  /** Is any game running */
-//    current_level = 0;  /** Current level of the game */
-//    bricks.clear();  /** From the 2d string, actual coordinates are stored here */
-//    done.clear();  /** done[i] = 1 means i'th brick has been destroyed permanently */
-//    Q = queue<int>();   /** Queue of bricks to be destroyed */
-//    done = vector<bool> (bricks.size(), 0);
 
     fout << setprecision(6) << fixed;
     fout << dx_ball_x << " " << dx_ball_y << endl;
@@ -537,6 +520,8 @@ void loadGame(int slot)
     }
     fin.close();
 }
+
+
 
 int main()
 {
@@ -867,11 +852,6 @@ void spe_key(int key, int x, int y)
         }
     }
     else if (game_finished_screen == true || game_over_screen == true) {
-//        game_finished_screen = false;
-//        game_over_screen = false;
-//        menu_screen = true;
-//        game_running = false;
-//        glutPostRedisplay();
         /// DO NOTHING
     }
     else if (menu_screen) {
