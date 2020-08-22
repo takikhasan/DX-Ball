@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1598113837 source:c:\users\takik\desktop\dx ball 2d\main.cpp
+1598116751 source:c:\users\takik\desktop\dx ball 2d\main.cpp
 	<windows.h>
 	<GL/glut.h>
 	<bits/stdc++.h>
