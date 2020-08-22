@@ -76,6 +76,8 @@ int score = 0;
 int lives_left = 5;
 double each_step = 3.5; /** Increase for more speed */
 bool menu_screen = 1;   /** Are we at the menu screen */
+bool game_finished_screen = 0;
+bool game_over_screen = 0;
 int menu_highlight = 1; /** Where we at on the menu */
 bool game_running = 0;  /** Is any game running */
 int current_level = 0;  /** Current level of the game */
@@ -195,11 +197,39 @@ void quit()
     exit(0);
 }
 
+void displaySuccessMessage()
+{
+    string s1 = "You have finished the game!!!";
+    string s2 = "Your score: " + to_string(score) + " (Highest Possible)";
+    string s3 = "Press Enter to continue";
+    double y = 12;
+    glColor3f(1.000, 0.843, 0.000);
+    renderBitmapString(-(13.0 / 8.0) * s1.size(), y, (void *)font_menu, s1);
+    glColor3f(0.000, 1.000, 0.000);
+    renderBitmapString(-(13.0 / 8.0) * s2.size(), y - 8, (void *)font_menu, s2);
+    glColor3f(0.980, 0.922, 0.843);
+    renderBitmapString(-(13.0 / 8.0) * s3.size(), y - 16, (void *)font_menu, s3);
+}
+
+void displayFailureMessage()
+{
+    string s1 = "You are out of lives!!!";
+    string s2 = "Your score: " + to_string(score);
+    string s3 = "Press Enter to continue";
+    double y = 12;
+    glColor3f(1.000, 0.000, 0.000);
+    renderBitmapString(-(13.0 / 8.0) * s1.size(), y, (void *)font_menu, s1);
+    glColor3f(0.000, 1.000, 0.000);
+    renderBitmapString(-(13.0 / 8.0) * s2.size(), y - 8, (void *)font_menu, s2);
+    glColor3f(0.980, 0.922, 0.843);
+    renderBitmapString(-(13.0 / 8.0) * s3.size(), y - 16, (void *)font_menu, s3);
+}
+
 int main()
 {
 	glutInitWindowSize (600, 600);
 	glutInitWindowPosition (100, 100);
-	glutCreateWindow ("DX Ball 2D - Made by Takik Hasan");
+	glutCreateWindow ("DX Ball 2D - By Takik Hasan");
 	init();
 
     glutReshapeFunc(reshape);
@@ -350,7 +380,20 @@ void moveRight(void)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    if (!menu_screen) {
+    if (game_finished_screen == true || game_over_screen == true) {
+        switch (key) {
+            case 13:
+                game_finished_screen = false;
+                game_over_screen = false;
+                menu_screen = true;
+                game_running = false;
+                glutPostRedisplay();
+                break;
+            default:
+                break;
+        }
+    }
+    else if (!menu_screen) {
         switch (key) {
             case 'a':
                 moveLeft();
@@ -387,7 +430,15 @@ void keyboard(unsigned char key, int x, int y)
 
 void spe_key(int key, int x, int y)
 {
-    if (menu_screen) {
+    if (game_finished_screen == true || game_over_screen == true) {
+//        game_finished_screen = false;
+//        game_over_screen = false;
+//        menu_screen = true;
+//        game_running = false;
+//        glutPostRedisplay();
+        /// DO NOTHING
+    }
+    else if (menu_screen) {
         switch (key) {
             case GLUT_KEY_UP:
                 menu_highlight--;
@@ -508,7 +559,8 @@ void destroy_bricks()
         if (level_finished) {
             if (current_level == (int)grid.size() - 1) {
                 /// SUCCESS!! YOU HAVE FINISHED THE GAME! STOP WASTING SO MUCH TIME :) !!
-
+                game_finished_screen = true;
+                glutPostRedisplay();
             }
             else {
                 loadBricks(++current_level);
@@ -556,7 +608,13 @@ void takeOneStep()
     else if (outOfBounds()) {
         if (dx_ball_y - dx_ball_r <= -100) {
             lives_left--;
-            respawn();
+            if (lives_left == 0) {
+                game_over_screen = true;
+                glutPostRedisplay();
+            }
+            else {
+                respawn();
+            }
         }
         else {
             direction++;
@@ -576,11 +634,9 @@ void takeOneStep()
                 }
                 if (angle > 90 - 22.5) angle = 90 - 22.5;
                 if (angle < 22.5) angle = 22.5;
-//                cout << angle << endl;
                 swap(angle, new_angle);
                 direction++;
                 if (direction == 5) direction = 1;
-//                dx_ball_y = reflector_y + reflector_h + dx_ball_r + 1;
             }
             else {
                 angle = new_angle;
@@ -675,10 +731,17 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    if (menu_screen == true) {
+    if (game_over_screen == true) {
+        displayFailureMessage();
+        glFlush();
+    }
+    else if (game_finished_screen == true) {
+        displaySuccessMessage();
+        glFlush();
+    }
+    else if (menu_screen == true) {
         displayMenu();
         glFlush();
-        return;
     }
     else {
         displayGame();
