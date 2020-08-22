@@ -190,7 +190,10 @@ void resumePlaying()
     glutPostRedisplay();
 }
 
-
+void quit()
+{
+    exit(0);
+}
 
 int main()
 {
@@ -374,6 +377,7 @@ void keyboard(unsigned char key, int x, int y)
             case 13:
                 if (menu_highlight == 1) newGame();
                 else if (menu_highlight == 6) resumePlaying();
+                else if (menu_highlight == 5) quit();
                 break;
             default:
                 break;
