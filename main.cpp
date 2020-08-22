@@ -68,7 +68,7 @@ int total_options;
 double dx_ball_x = 0, dx_ball_y = -98;
 double reflector_x = 0, reflector_y = -98;
 int direction = 1;
-double fps = 240;
+double fps = 200;
 double angle = 90 - 22.5;  /** Degrees */
 double new_angle = 90 - 22.5;   /** Temporary variable to help adjust angle */
 bool ball_is_moving = 0;
@@ -79,8 +79,12 @@ bool menu_screen = 1;   /** Are we at the menu screen */
 bool game_finished_screen = 0;
 bool game_over_screen = 0;
 bool FPS_screen = 0;
+bool save_screen = 0;
+bool load_screen = 0;
 int menu_highlight = 1; /** Where we at on the menu */
 int FPS_highlight = 1;  /** Where we at on the FPS menu */
+int save_highlight = 1; /** Where we at on the save menu */
+int load_highlight = 1;
 bool game_running = 0;  /** Is any game running */
 int current_level = 0;  /** Current level of the game */
 vector<vector<double>> bricks;  /** From the 2d string, actual coordinates are stored here */
@@ -294,7 +298,245 @@ void displayFPSOptions()
     }
 }
 
+void save()
+{
+    if (game_running == false) return;
+    save_screen = true;
+    menu_screen = false;
+    glutPostRedisplay();
+}
 
+void displaySaveSlots()
+{
+    total_options = 4;  /** Slot 1, Slot 2, Slot 3, Slot 4 */
+    double option_width = 80;
+    double option_height = 15;
+    double x = -option_width / 2;
+    double y = (option_height * total_options) / 2;
+    int i = 1;
+    while (1) {
+        if (save_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
+
+        if (i == 1) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 1");
+        }
+        else if (i == 2) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 2");
+        }
+        else if (i == 3) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 3");
+        }
+        else if (i == 4) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 4");
+        }
+
+        if (save_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
+
+        glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x, y - option_height);
+            glVertex2f(x + option_width, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x + option_width, y - option_height);
+            glVertex2f(x + option_width, y);
+        glEnd();
+         glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x + option_width, y);
+        glEnd();
+
+        y -= option_height + 2;
+
+        i++;
+        if (i > total_options) break;
+    }
+}
+
+void saveGame(int slot)
+{
+    char s[] = "SaveFile_ .txt";
+    s[9] = '0' + slot;
+    ofstream fout;
+    fout.open(s);
+//    dx_ball_x = 0, dx_ball_y = -98;
+//    reflector_x = 0, reflector_y = -98;
+//    direction = 1;
+//    angle = 90 - 22.5;  /** Degrees */
+//    new_angle = 90 - 22.5;   /** Temporary variable to help adjust angle */
+//    ball_is_moving = 0;
+//    score = 0;
+//    lives_left = 5;
+//    each_step = 3.5; /** Increase for more speed */
+//    menu_screen = false;   /** Are we at the menu screen */
+//    menu_highlight = 1; /** Where we at on the menu */
+//    game_running = true;  /** Is any game running */
+//    current_level = 0;  /** Current level of the game */
+//    bricks.clear();  /** From the 2d string, actual coordinates are stored here */
+//    done.clear();  /** done[i] = 1 means i'th brick has been destroyed permanently */
+//    Q = queue<int>();   /** Queue of bricks to be destroyed */
+//    done = vector<bool> (bricks.size(), 0);
+
+    fout << setprecision(6) << fixed;
+    fout << dx_ball_x << " " << dx_ball_y << endl;
+    fout << reflector_x << " " << reflector_y << endl;
+    fout << direction << endl;
+    fout << angle << endl;
+    fout << new_angle << endl;
+    fout << ball_is_moving << endl;
+    fout << score << endl;
+    fout << lives_left << endl;
+    fout << current_level << endl;
+    fout << (int)bricks.size() << endl;
+    for (vector<double> v : bricks) {
+        for (double el : v) {
+            fout << el << " ";
+        }
+        fout << endl;
+    }
+    fout << (int)done.size() << endl;
+    for (int el : done) {
+        fout << el << " ";
+    }
+    fout << endl;
+    queue<int> temp = Q;
+    fout << (int)temp.size() << endl;
+    while (!temp.empty()) {
+        int top = temp.front();
+        temp.pop();
+        fout << top << " ";
+    }
+    fout << endl;
+
+    fout.close();
+}
+
+void load()
+{
+    load_screen = true;
+    menu_screen = false;
+    glutPostRedisplay();
+}
+
+void displayLoadSlots()
+{
+    total_options = 4;  /** Slot 1, Slot 2, Slot 3, Slot 4 */
+    double option_width = 80;
+    double option_height = 15;
+    double x = -option_width / 2;
+    double y = (option_height * total_options) / 2;
+    int i = 1;
+    while (1) {
+        if (load_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
+
+        if (i == 1) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 1");
+        }
+        else if (i == 2) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 2");
+        }
+        else if (i == 3) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 3");
+        }
+        else if (i == 4) {
+            renderBitmapString(-(13.0 / 8.0) * 6, y - 9, (void *)font_menu, "Slot 4");
+        }
+
+        if (load_highlight == i) {
+            glColor3f(1.000, 0.843, 0.000);
+        }
+        else {
+            glColor3f(0.980, 0.922, 0.843);
+        }
+
+        glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x, y - option_height);
+            glVertex2f(x + option_width, y - option_height);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex2f(x + option_width, y - option_height);
+            glVertex2f(x + option_width, y);
+        glEnd();
+         glBegin(GL_LINES);
+            glVertex2f(x, y);
+            glVertex2f(x + option_width, y);
+        glEnd();
+
+        y -= option_height + 2;
+
+        i++;
+        if (i > total_options) break;
+    }
+}
+
+void loadGame(int slot)
+{
+    char s[] = "SaveFile_ .txt";
+    s[9] = '0' + slot;
+    ifstream fin;
+    fin.open(s);
+    if (!fin.fail()) {
+        fin >> dx_ball_x >> dx_ball_y;
+        fin >> reflector_x >> reflector_y;
+        fin >> direction;
+        fin >> angle;
+        fin >> new_angle;
+        fin >> ball_is_moving;
+        fin >> score;
+        fin >> lives_left;
+        fin >> current_level;
+        bricks.clear();
+        int sz;
+        fin >> sz;
+        while (sz--) {
+            vector<double> curr;
+            int z = 5;
+            while (z--) {
+                double x;
+                fin >> x;
+                curr.push_back(x);
+            }
+            bricks.push_back(curr);
+        }
+        done.clear();
+        fin >> sz;
+        while (sz--) {
+            int x;
+            fin >> x;
+            done.push_back(x);
+        }
+        Q = queue<int>();
+        fin >> sz;
+        while (sz--) {
+            int x;
+            fin >> x;
+            Q.push(x);
+        }
+    }
+    fin.close();
+}
 
 int main()
 {
@@ -456,7 +698,47 @@ void moveRight(void)
 
 void keyboard(unsigned char key, int x, int y)
 {
-    if (FPS_screen == true) {
+    if (load_screen == true) {
+        switch (key) {
+            case 13:
+                if (load_highlight == 1) loadGame(1);
+                else if (load_highlight == 2) loadGame(2);
+                else if (load_highlight == 3) loadGame(3);
+                else if (load_highlight == 4) loadGame(4);
+                menu_screen = true;
+                load_screen = false;
+                glutPostRedisplay();
+                break;
+            case 27:
+                menu_screen = true;
+                load_screen = false;
+                glutPostRedisplay();
+                break;
+            default:
+                break;
+        }
+    }
+    else if (save_screen == true) {
+        switch (key) {
+            case 13:
+                if (save_highlight == 1) saveGame(1);
+                else if (save_highlight == 2) saveGame(2);
+                else if (save_highlight == 3) saveGame(3);
+                else if (save_highlight == 4) saveGame(4);
+                menu_screen = true;
+                save_screen = false;
+                glutPostRedisplay();
+                break;
+            case 27:
+                menu_screen = true;
+                save_screen = false;
+                glutPostRedisplay();
+                break;
+            default:
+                break;
+        }
+    }
+    else if (FPS_screen == true) {
         switch (key) {
             case 13:
                 if (FPS_highlight == 1) fps = 60;
@@ -519,6 +801,8 @@ void keyboard(unsigned char key, int x, int y)
                 else if (menu_highlight == 6) resumePlaying();
                 else if (menu_highlight == 5) quit();
                 else if (menu_highlight == 4) changeFPS();
+                else if (menu_highlight == 2) save();
+                else if (menu_highlight == 3) load();
                 break;
             default:
                 break;
@@ -528,7 +812,43 @@ void keyboard(unsigned char key, int x, int y)
 
 void spe_key(int key, int x, int y)
 {
-    if (FPS_screen == true) {
+    if (load_screen == true) {
+        switch (key) {
+            case GLUT_KEY_UP:
+                load_highlight--;
+                if (load_highlight == 0)
+                    load_highlight = total_options;
+                glutPostRedisplay();
+                break;
+            case GLUT_KEY_DOWN:
+                load_highlight++;
+                if (load_highlight > total_options)
+                    load_highlight = 1;
+                glutPostRedisplay();
+                break;
+          default:
+                break;
+        }
+    }
+    else if (save_screen == true) {
+        switch (key) {
+            case GLUT_KEY_UP:
+                save_highlight--;
+                if (save_highlight == 0)
+                    save_highlight = total_options;
+                glutPostRedisplay();
+                break;
+            case GLUT_KEY_DOWN:
+                save_highlight++;
+                if (save_highlight > total_options)
+                    save_highlight = 1;
+                glutPostRedisplay();
+                break;
+          default:
+                break;
+        }
+    }
+    else if (FPS_screen == true) {
         switch (key) {
             case GLUT_KEY_UP:
                 FPS_highlight--;
@@ -847,7 +1167,15 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    if (FPS_screen == true) {
+    if (load_screen == true) {
+        displayLoadSlots();
+        glFlush();
+    }
+    else if (save_screen == true) {
+        displaySaveSlots();
+        glFlush();
+    }
+    else if (FPS_screen == true) {
         displayFPSOptions();
         glFlush();
     }
