@@ -1,5 +1,6 @@
 ## About
 Dx Ball Game written in pure C++ using the OpenGL API
+[GitHub](http://github.com)
 
 ## Installation
 <h3> For Players </h3>
@@ -10,7 +11,7 @@ Dx Ball Game written in pure C++ using the OpenGL API
 Ignore the first two steps if you have already setup OpenGL with Codeblocks.
 <p></p>
 <ul>
-  <li> Follow step 1 and 2 from <a href="https://github.com/user/repo/blob/branch/other_file.md"> here </a> </li>
+  <li> Follow step 1 and 2 from [here](http://github.com/user/repo/blob/branch/other_file.md) </li>
   <li> Additionally, copy the <code>glut.dll</code> file and paste to the folder <code>"C:\Windows\SysWOW64"</code> </li>
   <li> Clone the repo on your machine </li>
   <li> Open <code> DX Ball 2D.cbp </code> using <code> Code::Blocks </code> </li>
