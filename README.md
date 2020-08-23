@@ -38,3 +38,32 @@ Ignore the first two steps if you have already setup OpenGL with Codeblocks.
 ### GamePlay
 * <code>`Left Arrow`</code> <code>`Right Arrow`</code> <code>`a`</code> <code>`d`</code> for moving the paddle
 * <code>`Spacebar`</code> for launching the ball
+
+## Key Game Features
+
+### New Game, Pause & Resume
+* Start a new game from the menu. 
+* Press <code>`Esc`</code> to pause the game and go back to the menu. 
+* Resume playing again using the menu.
+
+### Lives & Levels
+* Five lives given at the start of a game. 
+* To finish the game you need to complete three levels.
+
+### Saving & Loading
+* Four slots to save & load any game at any state.
+* Overwritting is allowed. 
+* Can be accessed from the menu.
+
+### FPS & Sound
+* Toggle the sound ON or OFF from the main menu.
+* Four FPS options given to the player: 
+  - 60 fps
+  - 110 fps
+  - 200 fps
+  - 330 fps
+* To verify FPS:
+  - Set an FPS from the menu
+  - Start a new game or resume playing an existing game
+  - Pres <code>`Win`</code> + <code>`G`</code> to bring up Xbox Game Bar (It shows the actual FPS)
+  - Check the actual FPS with the FPS you have set before
