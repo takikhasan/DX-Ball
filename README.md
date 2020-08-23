@@ -15,6 +15,7 @@
 <p align="center">
   <a href="#Installation">Installation</a> •
   <a href="#Controls">Controls</a>
+  <a href="#Key-Game-Features">Key Game Features</a>
 </p>
 
 ## Installation
@@ -66,4 +67,4 @@ Ignore the first two steps if you have already setup OpenGL with Codeblocks.
   - Set an FPS from the menu
   - Start a new game or resume playing an existing game
   - Pres <code>`Win`</code> + <code>`G`</code> to bring up Xbox Game Bar (It shows the actual FPS)
-  - Check the actual FPS with the FPS you have set before
+  - Check the actual FPS with the FPS you have just set
