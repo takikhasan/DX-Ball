@@ -16,6 +16,12 @@ const double reflector_r = 30, reflector_h = 1; /** Half of relfector width, hal
 const double brick_width = 15;
 const double brick_height = 5.5;
 const vector<vector<string>> grid = {
+//    {
+//        "*#"
+//    },
+//    {
+//        "*#"
+//    }
     {
         "..##...##..",
         ".###...###.",
@@ -85,6 +91,7 @@ int menu_highlight = 1; /** Where we at on the menu */
 int FPS_highlight = 1;  /** Where we at on the FPS menu */
 int save_highlight = 1; /** Where we at on the save menu */
 int load_highlight = 1;
+bool sound_on = 1;
 bool game_running = 0;  /** Is any game running */
 int current_level = 0;  /** Current level of the game */
 vector<vector<double>> bricks;  /** From the 2d string, actual coordinates are stored here */
@@ -686,6 +693,7 @@ void keyboard(unsigned char key, int x, int y)
     if (load_screen == true) {
         switch (key) {
             case 13:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 if (load_highlight == 1) loadGame(1);
                 else if (load_highlight == 2) loadGame(2);
                 else if (load_highlight == 3) loadGame(3);
@@ -695,6 +703,7 @@ void keyboard(unsigned char key, int x, int y)
                 glutPostRedisplay();
                 break;
             case 27:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 menu_screen = true;
                 load_screen = false;
                 glutPostRedisplay();
@@ -706,6 +715,7 @@ void keyboard(unsigned char key, int x, int y)
     else if (save_screen == true) {
         switch (key) {
             case 13:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 if (save_highlight == 1) saveGame(1);
                 else if (save_highlight == 2) saveGame(2);
                 else if (save_highlight == 3) saveGame(3);
@@ -715,6 +725,7 @@ void keyboard(unsigned char key, int x, int y)
                 glutPostRedisplay();
                 break;
             case 27:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 menu_screen = true;
                 save_screen = false;
                 glutPostRedisplay();
@@ -726,6 +737,7 @@ void keyboard(unsigned char key, int x, int y)
     else if (FPS_screen == true) {
         switch (key) {
             case 13:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 if (FPS_highlight == 1) fps = 60;
                 else if (FPS_highlight == 2) fps = 110;
                 else if (FPS_highlight == 3) fps = 200;
@@ -735,6 +747,7 @@ void keyboard(unsigned char key, int x, int y)
                 glutPostRedisplay();
                 break;
             case 27:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 menu_screen = true;
                 FPS_screen = false;
                 glutPostRedisplay();
@@ -746,6 +759,7 @@ void keyboard(unsigned char key, int x, int y)
     else if (game_finished_screen == true || game_over_screen == true) {
         switch (key) {
             case 13:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 game_finished_screen = false;
                 game_over_screen = false;
                 menu_screen = true;
@@ -767,11 +781,17 @@ void keyboard(unsigned char key, int x, int y)
                 break;
             case 32:
                 if (!ball_is_moving) {
+                    if (sound_on == true) {
+                        PlaySound("smb_fireball.wav", NULL, SND_FILENAME | SND_ASYNC);
+                    }
                     ball_is_moving = 1;
                     glutPostRedisplay();
                 }
                 break;
             case 27:
+                if (sound_on) {
+                    PlaySound("smb_pause.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
                 menu_screen = true;
                 glutPostRedisplay();
                 break;
@@ -782,12 +802,22 @@ void keyboard(unsigned char key, int x, int y)
     else {
         switch (key) {
             case 13:
-                if (menu_highlight == 1) newGame();
-                else if (menu_highlight == 6) resumePlaying();
-                else if (menu_highlight == 5) quit();
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
+                if (menu_highlight == 1) {
+                    if (sound_on == true) {
+                        PlaySound("smb_stage_clear.wav", NULL, SND_FILENAME | SND_ASYNC);
+                    }
+                    newGame();
+                }
+                else if (menu_highlight == 7) resumePlaying();
+                else if (menu_highlight == 6) quit();
                 else if (menu_highlight == 4) changeFPS();
                 else if (menu_highlight == 2) save();
                 else if (menu_highlight == 3) load();
+                else if (menu_highlight == 5) {
+                    sound_on = !sound_on;
+                    glutPostRedisplay();
+                }
                 break;
             default:
                 break;
@@ -800,12 +830,14 @@ void spe_key(int key, int x, int y)
     if (load_screen == true) {
         switch (key) {
             case GLUT_KEY_UP:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 load_highlight--;
                 if (load_highlight == 0)
                     load_highlight = total_options;
                 glutPostRedisplay();
                 break;
             case GLUT_KEY_DOWN:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 load_highlight++;
                 if (load_highlight > total_options)
                     load_highlight = 1;
@@ -818,12 +850,14 @@ void spe_key(int key, int x, int y)
     else if (save_screen == true) {
         switch (key) {
             case GLUT_KEY_UP:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 save_highlight--;
                 if (save_highlight == 0)
                     save_highlight = total_options;
                 glutPostRedisplay();
                 break;
             case GLUT_KEY_DOWN:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 save_highlight++;
                 if (save_highlight > total_options)
                     save_highlight = 1;
@@ -836,12 +870,14 @@ void spe_key(int key, int x, int y)
     else if (FPS_screen == true) {
         switch (key) {
             case GLUT_KEY_UP:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 FPS_highlight--;
                 if (FPS_highlight == 0)
                     FPS_highlight = total_options;
                 glutPostRedisplay();
                 break;
             case GLUT_KEY_DOWN:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 FPS_highlight++;
                 if (FPS_highlight > total_options)
                     FPS_highlight = 1;
@@ -857,12 +893,14 @@ void spe_key(int key, int x, int y)
     else if (menu_screen) {
         switch (key) {
             case GLUT_KEY_UP:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 menu_highlight--;
                 if (menu_highlight == 0)
                     menu_highlight = total_options;
                 glutPostRedisplay();
                 break;
             case GLUT_KEY_DOWN:
+//                PlaySound("menu.wav", NULL, SND_FILENAME | SND_ASYNC);
                 menu_highlight++;
                 if (menu_highlight > total_options)
                     menu_highlight = 1;
@@ -958,6 +996,12 @@ void destroy_bricks()
         int top = Q.front();
         Q.pop();
         if (!done[top]) {
+            if (sound_on == true) {
+                if (bricks[top][4] == 1)
+                    PlaySound("Hard Brick (Brick).wav", NULL, SND_FILENAME | SND_ASYNC);
+                else if (bricks[top][4] == 2)
+                    PlaySound("smb_coin.wav", NULL, SND_FILENAME | SND_ASYNC);
+            }
             if (bricks[top][4] == 1) score += 6;
             else score += 24;
             done[top] = 1;
@@ -975,10 +1019,16 @@ void destroy_bricks()
         if (level_finished) {
             if (current_level == (int)grid.size() - 1) {
                 /// SUCCESS!! YOU HAVE FINISHED THE GAME! STOP WASTING SO MUCH TIME :) !!
+                if (sound_on == true) {
+                    PlaySound("smb_world_clear.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
                 game_finished_screen = true;
                 glutPostRedisplay();
             }
             else {
+                if (sound_on == true) {
+                    PlaySound("smb_stage_clear.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
                 loadBricks(++current_level);
                 done = vector<bool> (bricks.size(), 0);
                 respawn();
@@ -1024,7 +1074,13 @@ void takeOneStep()
     else if (outOfBounds()) {
         if (dx_ball_y - dx_ball_r <= -100) {
             lives_left--;
+            if (sound_on == true) {
+                PlaySound("smb_mariodie.wav", NULL, SND_FILENAME | SND_ASYNC);
+            }
             if (lives_left == 0) {
+                if (sound_on == true) {
+                    PlaySound("smb_gameover.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
                 game_over_screen = true;
                 glutPostRedisplay();
             }
@@ -1033,6 +1089,9 @@ void takeOneStep()
             }
         }
         else {
+//            if (sound_on == true) {
+//                PlaySound("smb_bump.wav", NULL, SND_FILENAME | SND_ASYNC);
+//            }
             direction++;
             if (direction == 5) direction = 1;
         }
@@ -1051,6 +1110,9 @@ void takeOneStep()
                 if (angle > 90 - 22.5) angle = 90 - 22.5;
                 if (angle < 22.5) angle = 22.5;
                 swap(angle, new_angle);
+                if (sound_on == true) {
+                    PlaySound("smb_jump-super.wav", NULL, SND_FILENAME | SND_ASYNC);
+                }
                 direction++;
                 if (direction == 5) direction = 1;
             }
@@ -1068,14 +1130,14 @@ void takeOneStep()
 
 void displayMenu()
 {
-    total_options = 5;  /** New Game, Save, Load, Change FPS, Quit */
+    total_options = 6;  /** New Game, Save, Load, Change FPS, Toggle Sound, Quit */
     if (game_running == true) total_options++;  /** Resume Playing */
     double option_width = 80;
     double option_height = 15;
     double x = -option_width / 2;
     double y = (option_height * total_options) / 2;
     int i = 1;
-    if (total_options == 6) i = 6;
+    if (total_options == 7) i = 7;
     while (1) {
         if (menu_highlight == i) {
             glColor3f(1.000, 0.843, 0.000);
@@ -1097,6 +1159,10 @@ void displayMenu()
             renderBitmapString(-(13.0 / 8.0) * 10, y - 9, (void *)font_menu, "Change FPS");
         }
         else if (i == 5) {
+            string ss = sound_on ? "Turn Sound OFF" : "Turn Sound ON";
+            renderBitmapString(-(13.0 / 8.0) * (int)ss.size(), y - 9, (void *)font_menu, ss);
+        }
+        else if (i == 6) {
             renderBitmapString(-(13.0 / 8.0) * 4, y - 9, (void *)font_menu, "Quit");
         }
         else {
@@ -1129,14 +1195,14 @@ void displayMenu()
 
         y -= option_height + 2;
 
-        if (total_options != 6) {
+        if (total_options != 7) {
             i++;
             if (i > total_options) break;
         }
         else {
-            if (i == 6) i = 1;
+            if (i == 7) i = 1;
             else {
-                if (i == 5) break;
+                if (i == 6) break;
                 else i++;
             }
         }

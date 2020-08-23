@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1598116751 source:c:\users\takik\desktop\dx ball 2d\main.cpp
+1598173328 source:c:\users\takik\desktop\dx ball 2d\main.cpp
 	<windows.h>
 	<GL/glut.h>
 	<bits/stdc++.h>
@@ -218,7 +218,4 @@
 1301111164 c:\program files (x86)\codeblocks\mingw\include\gl\glu.h
 	<stddef.h>
 	<GL/gl.h>
-
-1341006774 c:\program files (x86)\codeblocks\mingw\include\math.h
-	<_mingw.h>
 
