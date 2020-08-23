@@ -18,12 +18,12 @@
   <a href="#Key-Game-Features">Key Game Features</a>
 </p>
 
-## Installation
+## :cyclone:Installation
 
-### For Players
+### :gun:For Players
 * Go to <code>bin/release</code> and run <code>Dx Ball 2D.exe</code>
 
-### For Developers
+### :wrench:For Developers
 Ignore the first two steps if you have already setup OpenGL with Codeblocks.
 * Follow step 1 and 2 from [here](https://www.codewithc.com/how-to-setup-opengl-glut-in-codeblocks/)
 * Additionally, copy the <code>glut.dll</code> file and paste to the folder <code>"C:\Windows\SysWOW64"</code>
@@ -31,32 +31,32 @@ Ignore the first two steps if you have already setup OpenGL with Codeblocks.
 * Open <code> DX Ball 2D.cbp </code> using <code> Code::Blocks </code>
 * From this point, modify whatever you want and hit <code>Build and run</code> at any moment after selecting the target (Debug/Release) to compile and run the game
 
-## Controls
+## :video_game:Controls
 
-### Menu Navigation
+### :scroll:Menu Navigation
 * <code>`Up Arrow`</code> <code>`Down Arrow`</code> <code>`Enter`</code> <code>`Esc`</code>
 
-### GamePlay
+### :bicyclist:GamePlay
 * <code>`Left Arrow`</code> <code>`Right Arrow`</code> <code>`a`</code> <code>`d`</code> for moving the paddle
 * <code>`Spacebar`</code> for launching the ball
 
-## Key Game Features
+## :star2:Key Game Features
 
-### New Game, Pause & Resume
+### :game_die:New Game, Pause & Resume
 * Start a new game from the menu. 
 * Press <code>`Esc`</code> to pause the game and go back to the menu. 
 * Resume playing again using the menu.
 
-### Lives & Levels
+### :sparkling_heart:Lives & Levels
 * Five lives given at the start of a game. 
 * To finish the game you need to complete three levels.
 
-### Saving & Loading
+### :pencil:Saving & Loading
 * Four slots to save & load any game at any state.
 * Overwritting is allowed. 
 * Can be accessed from the menu.
 
-### FPS & Sound
+### :clapper:FPS & Sound
 * Toggle the sound ON or OFF from the main menu.
 * Four FPS options given to the player: 
   - 60 fps
