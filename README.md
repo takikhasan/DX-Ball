@@ -18,12 +18,12 @@
   <a href="#Key-Game-Features">Key Game Features</a>
 </p>
 
-## :pill:Installation
+## :bomb:Installation
 
 ### :space_invader:For Players
 * Go to <code>bin/release</code> and run <code>Dx Ball 2D.exe</code>
 
-### :wrench:For Developers
+### :mortar_board:For Developers
 Ignore the first two steps if you have already setup OpenGL with Codeblocks.
 * Follow step 1 and 2 from [here](https://www.codewithc.com/how-to-setup-opengl-glut-in-codeblocks/)
 * Additionally, copy the <code>glut.dll</code> file and paste to the folder <code>"C:\Windows\SysWOW64"</code>
