@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-<h4 align="center">A minimal imitation of the classic DX Ball Game written in <code>C++</code> & <code>OpenGL</code>.</h4>
+<h4 align="center">A minimal imitation of the classic DX Ball Game written in <code>C++</code> using <code>OpenGL</code>.</h4>
 
 <p align="center">
   <img src="https://img.shields.io/badge/C++-Language-informational?style=flat&logo=c%2B%2B&logoColor=blue&color=blueviolet">
@@ -67,4 +67,4 @@ Ignore the first two steps if you have already setup OpenGL with Codeblocks.
   - Set an FPS from the menu
   - Start a new game or resume playing an existing game
   - Pres <code>`Win`</code> + <code>`G`</code> to bring up Xbox Game Bar (It shows the actual FPS)
-  - Check the actual FPS with the FPS you have just set
+  - Check the actual FPS with the FPS you have just set (It works)
