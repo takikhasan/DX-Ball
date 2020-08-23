@@ -24,6 +24,6 @@ Ignore the first two steps if you have already setup OpenGL with Codeblocks.
 </ul>
 <h3> GamePlay </h3>
 <ul>
-  <li> <code>`Left Arrow`</code> <code>`Right Arrow`</code> for moving the paddle </li>
+  <li> <code>`Left Arrow`</code> <code>`Right Arrow`</code> <code>`a`</code> <code>`d`</code> for moving the paddle </li>
   <li> <code>`Spacebar`</code> for launching the ball </li>
 </ul>
