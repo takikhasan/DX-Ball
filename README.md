@@ -18,6 +18,10 @@
   <a href="#star2-Key-Game-Features">Key Game Features</a>
 </p>
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/takikhasan/DX-Ball/master/dx_ball_2D.gif">
+</p>
+
 ## :bomb: Installation
 
 ### :space_invader: For Players
