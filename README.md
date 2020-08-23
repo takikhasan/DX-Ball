@@ -5,6 +5,11 @@
 
 <h4 align="center">An minimal imitation of the classic DX Ball Game written in <code>C++</code> & <code>OpenGL</code>.</h4>
 
+<p align="center">
+  <a href="#Installation">Installation</a> •
+  <a href="#Controls">Controls</a>
+</p>
+
 ## Installation
 
 ### For Players
