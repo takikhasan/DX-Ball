@@ -1,5 +1,9 @@
-## About
-Dx Ball Game written in pure C++ using the OpenGL API
+<h1 align="center">
+  Dx Ball
+  <br>
+</h1>
+
+<h4 align="center">An minimal imitation of the classic DX Ball Game written in <code>C++</code> & <code>OpenGL</code>.</h4>
 
 ## Installation
 <h3> For Players </h3>
