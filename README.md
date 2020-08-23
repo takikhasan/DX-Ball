@@ -18,9 +18,9 @@
   <a href="#Key-Game-Features">Key Game Features</a>
 </p>
 
-## :cyclone:Installation
+## :pill:Installation
 
-### :gun:For Players
+### :space_invader:For Players
 * Go to <code>bin/release</code> and run <code>Dx Ball 2D.exe</code>
 
 ### :wrench:For Developers
