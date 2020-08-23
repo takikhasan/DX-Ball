@@ -6,10 +6,10 @@
 <h4 align="center">A minimal imitation of the classic DX Ball Game written in <code>C++</code> & <code>OpenGL</code>.</h4>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/C++-Code-informational?style=flat&logo=c%2B%2B&logoColor=blue&color=blueviolet">
-  <img src="https://img.shields.io/badge/OpenGL-Code-informational?style=flat&logo=opengl&logoColor=blue&color=blueviolet">
+  <img src="https://img.shields.io/badge/C++-Language-informational?style=flat&logo=c%2B%2B&logoColor=blue&color=blueviolet">
+  <img src="https://img.shields.io/badge/OpenGL-API-informational?style=flat&logo=opengl&logoColor=blue&color=blueviolet">
   <img src="https://img.shields.io/badge/Windows-OS-informational?style=flat&logo=windows&logoColor=green&color=orange">
-  <img src="https://img.shields.io/badge/Code::Blocks-Editor-informational?style=flat&logo=codeblocks&logoColor=red&color=red">
+  <img src="https://img.shields.io/badge/Code::Blocks-Editor-informational?style=flat&logo=codio&logoColor=red&color=red">
 </p>
 
 <p align="center">
