@@ -6,10 +6,18 @@
 <h4 align="center">A minimal imitation of the classic DX Ball Game written in <code>C++</code> using <code>OpenGL</code>.</h4>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/C++-Language-informational?style=flat&logo=c%2B%2B&logoColor=blue&color=blueviolet">
-  <img src="https://img.shields.io/badge/OpenGL-API-informational?style=flat&logo=opengl&logoColor=blue&color=blueviolet">
-  <img src="https://img.shields.io/badge/Windows-OS-informational?style=flat&logo=windows&logoColor=green&color=orange">
-  <img src="https://img.shields.io/badge/Code::Blocks-Editor-informational?style=flat&logo=codio&logoColor=yellow&color=red">
+  <a href="https://en.wikipedia.org/wiki/C%2B%2B11">
+    <img src="https://img.shields.io/badge/C++11-Language-informational?style=flat&logo=c%2B%2B&logoColor=blue&color=blueviolet">
+  </a>
+  <a href="https://www.opengl.org/">
+    <img src="https://img.shields.io/badge/OpenGL-API-informational?style=flat&logo=opengl&logoColor=blue&color=blueviolet">
+  </a>
+  <a href="https://www.microsoft.com/en-au/software-download/windows10">
+    <img src="https://img.shields.io/badge/Windows-OS-informational?style=flat&logo=windows&logoColor=green&color=orange">
+  </a>
+  <a href="http://www.codeblocks.org/">
+    <img src="https://img.shields.io/badge/Code::Blocks-Editor-informational?style=flat&logo=codio&logoColor=yellow&color=red">
+  </a>
 </p>
 
 <p align="center">
