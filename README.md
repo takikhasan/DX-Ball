@@ -14,7 +14,7 @@
 
 <p align="center">
   <a href="#Installation">Installation</a> •
-  <a href="#Controls">Controls</a>
+  <a href="#Controls">Controls</a> •
   <a href="#Key-Game-Features">Key Game Features</a>
 </p>
 
