@@ -6,17 +6,10 @@
 <h4 align="center">A minimal imitation of the classic DX Ball Game written in <code>C++</code> & <code>OpenGL</code>.</h4>
 
 <p align="center">
-  <a href="https://badge.fury.io/js/electron-markdownify">
-    <img src="https://badge.fury.io/js/electron-markdownify.svg"
-         alt="Gitter">
-  </a>
-  <a href="https://gitter.im/amitmerchant1990/electron-markdownify"><img src="https://badges.gitter.im/amitmerchant1990/electron-markdownify.svg"></a>
-  <a href="https://saythanks.io/to/amitmerchant1990">
-      <img src="https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg">
-  </a>
-  <a href="https://www.paypal.me/AmitMerchant">
-    <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
-  </a>
+  <img src="https://img.shields.io/badge/C++-Code-informational?style=flat&logo=c%2B%2B&logoColor=blue&color=blueviolet">
+  <img src="https://img.shields.io/badge/OpenGL-Code-informational?style=flat&logo=opengl&logoColor=blue&color=blueviolet">
+  <img src="https://img.shields.io/badge/Windows-OS-informational?style=flat&logo=windows&logoColor=green&color=orange">
+  <img src="https://img.shields.io/badge/Code::Blocks-Editor-informational?style=flat&logo=codeblocks&logoColor=red&color=red">
 </p>
 
 <p align="center">
