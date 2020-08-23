@@ -12,7 +12,7 @@
 
 ### For Developers
 Ignore the first two steps if you have already setup OpenGL with Codeblocks.
-* Follow step 1 and 2 from <a href="https://github.com/user/repo/blob/branch/other_file.md"> here </a>
+* Follow step 1 and 2 from [here](https://www.codewithc.com/how-to-setup-opengl-glut-in-codeblocks/)
 * Additionally, copy the <code>glut.dll</code> file and paste to the folder <code>"C:\Windows\SysWOW64"</code>
 * Clone the repo on your machine
 * Open <code> DX Ball 2D.cbp </code> using <code> Code::Blocks </code>
