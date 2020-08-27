@@ -33,6 +33,9 @@
 ## :bomb: Installation
 
 ### :space_invader: For Players
+* Obtain <code>glut.dll</code> from [here](https://www.codewithc.com/how-to-setup-opengl-glut-in-codeblocks/)
+* Copy the file to <code>"C:\Windows\System32"</code>
+* Clone the repo on your machine
 * Go to <code>bin/release</code> and run <code>Dx Ball 2D.exe</code>
 
 ### :mortar_board: For Developers
